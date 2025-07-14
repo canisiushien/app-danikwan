@@ -1,0 +1,58 @@
+#####
+server:
+  port: 8081
+
+# config spring
+spring:
+  application:
+    name: DANIKWAN
+    version: 1.0
+    domain:
+      url: http://localhost:4200
+    resources:
+      static-locations: classpath:/static/
+  session:
+    store-type: jdbc
+  jpa:
+    properties:
+      hibernate:
+        show_sql: false
+        javax.cache.missing_cache_strategy: create
+    hibernate:
+      ddl-auto: update
+      jdbc.lob.non_contextual_creation: true
+      default_schema: public
+  sql:
+    init:
+      platform: postgres
+  datasource:
+    #gestion de pool de connexion : driver-class-name et hikari
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      # Maintenir au moins 2 connexions disponibles.
+      minimumIdle: 2
+      # Capacité maximale de pool à gérer les pics de charge.
+      maximumPoolSize: 20
+      # 120000ms=2mn pour réduire la fréquence des fermetures et réouvertures.
+      idleTimeout: 120000
+      # Temps max d’attente pour une connexion disponible (300000ms=300 secondes=5mn).
+      connectionTimeout: 300000
+      # Détecte les connexions oubliées après 50 minutes.
+      leakDetectionThreshold: 3000000
+    url: jdbc:postgresql://localhost:5432/danikwandb_test
+    username: postgres
+    password: admin
+  #config profiles prod or dev, mailer
+  profiles:
+    active: dev
+  devtools:
+    restart:
+      enabled: true
+
+#config log app
+logging:
+  level:
+    ROOT: INFO
+    bf.apptkd.danikwan:
+      - DEBUG
+      - INFO
